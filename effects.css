@@ -111,7 +111,11 @@ body::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: blur(10px);
+    /* Use backdrop-filter for blur and a subtle overlay color */
+    backdrop-filter: blur(10px);
+    background: rgba(0,0,0,0.25);
+    pointer-events: none;
+    z-index: 0;
 }
 
 /* Star Particles Animation */
