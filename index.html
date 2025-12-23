@@ -17,10 +17,18 @@
 body {
     height: 100vh;
     overflow: hidden;
-    background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #0d0d25 100%);
+    background: linear-gradient(-45deg, #1a0033, #2d0052, #0d1b2a, #1a0033);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
     font-family: 'Poppins', sans-serif;
     color: white;
     position: relative;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 /* 3D Particle Background */
@@ -32,6 +40,56 @@ body {
     height: 100%;
     z-index: 1;
     perspective: 1200px;
+}
+
+/* 3D Floating Elements */
+.floating-element {
+    position: absolute;
+    transform-style: preserve-3d;
+    animation: float3d 20s infinite ease-in-out;
+}
+
+.cube {
+    width: 80px;
+    height: 80px;
+    transform-style: preserve-3d;
+}
+
+.cube-face {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: rgba(100, 150, 255, 0.1);
+    border: 2px solid rgba(150, 100, 255, 0.3);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+}
+
+.cube-face:nth-child(1) { transform: translateZ(40px); }
+.cube-face:nth-child(2) { transform: rotateY(180deg) translateZ(40px); }
+.cube-face:nth-child(3) { transform: rotateY(90deg) translateZ(40px); }
+.cube-face:nth-child(4) { transform: rotateY(-90deg) translateZ(40px); }
+.cube-face:nth-child(5) { transform: rotateX(90deg) translateZ(40px); }
+.cube-face:nth-child(6) { transform: rotateX(-90deg) translateZ(40px); }
+
+@keyframes float3d {
+    0% { transform: translateY(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+    50% { transform: translateY(-50px) rotateX(180deg) rotateY(180deg) rotateZ(90deg); }
+    100% { transform: translateY(0) rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+}
+
+.sphere {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(200, 100, 255, 0.3), rgba(100, 150, 255, 0.1));
+    border: 2px solid rgba(150, 100, 255, 0.2);
+    box-shadow: 
+        0 0 40px rgba(150, 100, 255, 0.4),
+        inset -30px -30px 60px rgba(0, 0, 0, 0.3);
 }
 
 .particle {
@@ -138,8 +196,9 @@ body {
 .card img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
+    background: rgba(0, 0, 0, 0.3);
 }
 
 /* Reflection Effect */
@@ -252,6 +311,7 @@ body {
     border-radius: 25px;
     margin-bottom: 25px;
     box-shadow: 0 15px 40px rgba(150, 100, 255, 0.3);
+    object-fit: contain;
 }
 
 .modal-title {
@@ -295,7 +355,56 @@ body {
 // ============ 3D Particle System ============
 function createParticles() {
     const container = document.getElementById('particles-container');
-    const particleCount = 80;
+    
+    // Tạo 3D Cubes
+    for (let i = 0; i < 3; i++) {
+        const cube = document.createElement('div');
+        cube.className = 'floating-element cube';
+        
+        const positions = [
+            { left: '10%', top: '20%', delay: 0 },
+            { left: '80%', top: '70%', delay: 3 },
+            { left: '70%', top: '10%', delay: 6 }
+        ];
+        
+        const pos = positions[i];
+        cube.style.left = pos.left;
+        cube.style.top = pos.top;
+        cube.style.animationDelay = pos.delay + 's';
+        
+        for (let j = 0; j < 6; j++) {
+            const face = document.createElement('div');
+            face.className = 'cube-face';
+            const emojis = ['🎄', '🎁', '✨', '❄️', '⭐', '🔮'];
+            face.textContent = emojis[j];
+            cube.appendChild(face);
+        }
+        
+        container.appendChild(cube);
+    }
+    
+    // Tạo 3D Spheres
+    for (let i = 0; i < 4; i++) {
+        const sphere = document.createElement('div');
+        sphere.className = 'floating-element sphere';
+        
+        const positions = [
+            { left: '20%', top: '60%', delay: 2 },
+            { left: '85%', top: '40%', delay: 4 },
+            { left: '15%', top: '80%', delay: 1 },
+            { left: '75%', top: '30%', delay: 5 }
+        ];
+        
+        const pos = positions[i];
+        sphere.style.left = pos.left;
+        sphere.style.top = pos.top;
+        sphere.style.animationDelay = pos.delay + 's';
+        
+        container.appendChild(sphere);
+    }
+    
+    // Tạo particles nhỏ
+    const particleCount = 50;
     
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
