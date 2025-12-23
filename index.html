@@ -1,620 +1,461 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎄 Noel 3D Gallery 🎄</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="effects.css">
-
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    height: 100vh;
-    overflow: hidden;
-    background: linear-gradient(-45deg, #1a0033, #2d0052, #0d1b2a, #1a0033);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
-    font-family: 'Poppins', sans-serif;
-    color: white;
-    position: relative;
-}
-
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* 3D Particle Background */
-#particles-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    perspective: 1200px;
-}
-
-/* 4D Tesseract (Hypercube) */
-.tesseract-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 400px;
-    height: 400px;
-    transform: translate(-50%, -50%);
-    transform-style: preserve-3d;
-}
-
-.tesseract {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    animation: rotateTesseract 15s linear infinite;
-}
-
-@keyframes rotateTesseract {
-    0% {
-        transform: 
-            rotateX(0deg)
-            rotateY(0deg)
-            rotateZ(0deg);
-    }
-    50% {
-        transform: 
-            rotateX(45deg)
-            rotateY(45deg)
-            rotateZ(45deg);
-    }
-    100% {
-        transform: 
-            rotateX(360deg)
-            rotateY(360deg)
-            rotateZ(360deg);
-    }
-}
-
-.vertex {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    left: 50%;
-    top: 50%;
-    margin-left: -6px;
-    margin-top: -6px;
-    border-radius: 50%;
-    box-shadow: 0 0 20px rgba(150, 100, 255, 0.8);
-}
-
-.vertex::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.8), rgba(150, 100, 255, 0.4));
-    border-radius: 50%;
-    animation: vertexPulse 2s ease-in-out infinite;
-}
-
-@keyframes vertexPulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.5); opacity: 0.6; }
-}
-
-.edge {
-    position: absolute;
-    background: linear-gradient(90deg, 
-        rgba(100, 150, 255, 0.3) 0%,
-        rgba(150, 100, 255, 0.6) 50%,
-        rgba(100, 150, 255, 0.3) 100%);
-    height: 2px;
-    transform-origin: left center;
-    transform-style: preserve-3d;
-}
-
-.face {
-    position: absolute;
-    border: 1px solid rgba(100, 150, 255, 0.3);
-    background: rgba(150, 100, 255, 0.05);
-    backdrop-filter: blur(5px);
-    transform-style: preserve-3d;
-}
-
-/* Quantum 4D Orbitals */
-.quantum-orbital {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    border-radius: 50%;
-    border: 2px solid;
-    transform: translate(-50%, -50%);
-    transform-style: preserve-3d;
-}
-
-.orbital-1 {
-    width: 200px;
-    height: 200px;
-    border-color: rgba(100, 150, 255, 0.4);
-    animation: rotateOrbital1 20s linear infinite;
-    box-shadow: 0 0 30px rgba(100, 150, 255, 0.2);
-}
-
-.orbital-2 {
-    width: 280px;
-    height: 280px;
-    border-color: rgba(150, 100, 255, 0.3);
-    animation: rotateOrbital2 25s linear infinite reverse;
-    box-shadow: 0 0 40px rgba(150, 100, 255, 0.15);
-}
-
-.orbital-3 {
-    width: 360px;
-    height: 360px;
-    border-color: rgba(200, 100, 255, 0.2);
-    animation: rotateOrbital3 30s linear infinite;
-    box-shadow: 0 0 50px rgba(200, 100, 255, 0.1);
-}
-
-@keyframes rotateOrbital1 {
-    0% { transform: translate(-50%, -50%) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-    100% { transform: translate(-50%, -50%) rotateX(180deg) rotateY(180deg) rotateZ(360deg); }
-}
-
-@keyframes rotateOrbital2 {
-    0% { transform: translate(-50%, -50%) rotateX(0deg) rotateZ(0deg); }
-    100% { transform: translate(-50%, -50%) rotateX(360deg) rotateZ(-360deg); }
-}
-
-@keyframes rotateOrbital3 {
-    0% { transform: translate(-50%, -50%) rotateY(0deg) rotateZ(0deg); }
-    100% { transform: translate(-50%, -50%) rotateY(360deg) rotateZ(360deg); }
-}
-
-.particle {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: radial-gradient(circle, rgba(255,200,255,0.8), rgba(100,200,255,0.2));
-    border-radius: 50%;
-    box-shadow: 0 0 10px rgba(150,150,255,0.6);
-    animation: float 20s infinite linear;
-}
-
-@keyframes float {
-    0% {
-        transform: translateZ(0) rotateX(0deg) rotateY(0deg);
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.5;
-    }
-    100% {
-        transform: translateZ(-500px) rotateX(180deg) rotateY(180deg);
-        opacity: 0;
-    }
-}
-
-.scene {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    perspective: 1200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-}
-
-.carousel {
-    position: relative;
-    width: 320px;
-    height: 420px;
-    transform-style: preserve-3d;
-    transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
-    touch-action: pan-y;
-    user-select: none;
-    -webkit-user-select: none;
-    cursor: grab;
-}
-
-.carousel:active {
-    cursor: grabbing;
-}
-
-/* Glassmorphism Card */
-.card {
-    position: absolute;
-    width: 260px;
-    height: 360px;
-    border-radius: 30px;
-    overflow: hidden;
-    transform-style: preserve-3d;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
-    backdrop-filter: blur(20px);
-    background: rgba(255, 255, 255, 0.08);
-    border: 2px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 
-        0 8px 32px 0 rgba(31, 38, 135, 0.37),
-        inset 0 1px 1px 0 rgba(255, 255, 255, 0.3);
-    backface-visibility: hidden;
-}
-
-.card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-        135deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.15) 50%,
-        transparent 100%
-    );
-    transform: rotate(45deg);
-    animation: shine 3s infinite;
-    z-index: 1;
-}
-
-@keyframes shine {
-    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-}
-
-.card:hover {
-    transform: scale(1.05) rotateZ(2deg);
-    box-shadow: 
-        0 15px 50px 0 rgba(100, 150, 255, 0.5),
-        inset 0 1px 1px 0 rgba(255, 255, 255, 0.4),
-        0 0 60px rgba(150, 100, 255, 0.3);
-    background: rgba(255, 255, 255, 0.12);
-}
-
-.card-content {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-    overflow: hidden;
-}
-
-.card img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-    background: rgba(0, 0, 0, 0.3);
-}
-
-/* Reflection Effect */
-.card::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        180deg,
-        transparent 40%,
-        rgba(0, 0, 0, 0.3) 100%
-    );
-    pointer-events: none;
-    z-index: 3;
-}
-
-.title {
-    position: fixed;
-    top: 30px;
-    width: 100%;
-    text-align: center;
-    font-size: 42px;
-    font-weight: 700;
-    z-index: 20;
-    text-shadow: 0 0 30px rgba(150, 100, 255, 0.4);
-    letter-spacing: 2px;
-}
-
-/* Modal Styles */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
-    z-index: 100;
-    animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.modal.active {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-content {
-    position: relative;
-    max-width: 600px;
-    max-height: 80vh;
-    background: linear-gradient(135deg, rgba(20, 30, 70, 0.95) 0%, rgba(40, 30, 80, 0.95) 100%);
-    backdrop-filter: blur(20px);
-    border: 2px solid rgba(255, 255, 255, 0.15);
-    border-radius: 40px;
-    padding: 40px;
-    box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.5),
-        inset 0 1px 1px rgba(255, 255, 255, 0.2);
-    animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    overflow-y: auto;
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.modal-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    transition: all 0.3s ease;
-    z-index: 10;
-}
-
-.modal-close:hover {
-    background: rgba(255, 100, 100, 0.3);
-    border-color: rgba(255, 100, 100, 0.5);
-    transform: rotate(90deg);
-}
-
-.modal-image {
-    width: 100%;
-    border-radius: 25px;
-    margin-bottom: 25px;
-    box-shadow: 0 15px 40px rgba(150, 100, 255, 0.3);
-    object-fit: contain;
-}
-
-.modal-title {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 15px;
-    color: #fff;
-}
-
-.modal-message {
-    font-size: 16px;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.85);
-    white-space: pre-wrap;
-}
-
-/* ============ RESPONSIVE DESIGN ============ */
-
-/* Tablet (768px - 1024px) */
-@media (max-width: 1024px) {
-    .title {
-        font-size: 36px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Magical Christmas Story</title>
     
-    .carousel {
-        width: 280px;
-        height: 380px;
-    }
+    <!-- CDNs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     
-    .card {
-        width: 240px;
-        height: 340px;
-    }
-    
-    .solar-system {
-        width: 300px;
-        height: 300px;
-    }
-    
-    .orbit-1 { width: 100px; height: 100px; }
-    .orbit-2 { width: 170px; height: 170px; }
-    .orbit-3 { width: 240px; height: 240px; }
-    
-    .planet {
-        font-size: 18px;
-    }
-}
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
 
-/* Mobile (320px - 768px) */
-@media (max-width: 768px) {
-    .title {
-        font-size: 28px;
-        top: 15px;
-    }
-    
-    .carousel {
-        width: 240px;
-        height: 340px;
-    }
-    
-    .card {
-        width: 200px;
-        height: 300px;
-        border-radius: 20px;
-    }
-    
-    .card:hover {
-        transform: scale(1.03) rotateZ(1deg);
-    }
-    
-    .solar-system {
-        width: 240px;
-        height: 240px;
-    }
-    
-    .sun {
-        width: 35px;
-        height: 35px;
-        margin-left: -17.5px;
-        margin-top: -17.5px;
-    }
-    
-    .orbit-1 { width: 80px; height: 80px; }
-    .orbit-2 { width: 140px; height: 140px; }
-    .orbit-3 { width: 200px; height: 200px; }
-    
-    .planet-1 { width: 28px; height: 28px; }
-    .planet-2 { width: 26px; height: 26px; }
-    .planet-3 { width: 30px; height: 30px; }
-    .planet-4 { width: 25px; height: 25px; }
-    .planet-5 { width: 27px; height: 27px; }
-    .planet-6 { width: 29px; height: 29px; }
-    
-    .planet {
-        font-size: 16px;
-    }
-    
-    .modal-content {
-        max-width: 90%;
-        padding: 30px 20px;
-        border-radius: 30px;
-    }
-    
-    .modal-title {
-        font-size: 24px;
-    }
-    
-    .modal-message {
-        font-size: 14px;
-    }
-    
-    .modal-close {
-        width: 35px;
-        height: 35px;
-        font-size: 20px;
-        top: 15px;
-        right: 15px;
-    }
-}
+    <style>
+        /* CSS Reset & Base */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-/* Small Mobile (320px - 480px) */
-@media (max-width: 480px) {
-    .title {
-        font-size: 22px;
-        top: 10px;
-    }
-    
-    .carousel {
-        width: 200px;
-        height: 300px;
-    }
-    
-    .card {
-        width: 170px;
-        height: 270px;
-        border-radius: 18px;
-    }
-    
-    .solar-system {
-        width: 200px;
-        height: 200px;
-    }
-    
-    .sun {
-        width: 30px;
-        height: 30px;
-        margin-left: -15px;
-        margin-top: -15px;
-    }
-    
-    .orbit-1 { width: 70px; height: 70px; }
-    .orbit-2 { width: 120px; height: 120px; }
-    .orbit-3 { width: 170px; height: 170px; }
-    
-    .planet-1 { width: 24px; height: 24px; }
-    .planet-2 { width: 22px; height: 22px; }
-    .planet-3 { width: 26px; height: 26px; }
-    .planet-4 { width: 20px; height: 20px; }
-    .planet-5 { width: 23px; height: 23px; }
-    .planet-6 { width: 25px; height: 25px; }
-    
-    .planet {
-        font-size: 14px;
-    }
-    
-    .modal-content {
-        max-width: 95%;
-        padding: 25px 15px;
-        border-radius: 25px;
-    }
-    
-    .modal-title {
-        font-size: 20px;
-        margin-bottom: 10px;
-    }
-    
-    .modal-message {
-        font-size: 13px;
-        line-height: 1.5;
-    }
-}
-</style>
+        body {
+            background-color: #020205; /* Deep dark night */
+            overflow: hidden;
+            font-family: 'Cinzel', serif;
+            color: white;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Canvas Container */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* UI Overlays */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: opacity 1s ease;
+            pointer-events: none; /* Default to pass-through */
+        }
+
+        /* Start Screen */
+        #start-screen {
+            background: radial-gradient(circle at center, rgba(20,20,40,0.9), #000);
+            pointer-events: auto;
+            opacity: 1;
+        }
+
+        #start-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4rem;
+            color: #d4af37; /* Gold */
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #ccc;
+            margin-bottom: 40px;
+            max-width: 600px;
+            line-height: 1.6;
+            padding: 0 20px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            background: transparent;
+            border: 2px solid #d4af37;
+            color: #d4af37;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Cinzel', serif;
+        }
+
+        .btn:hover {
+            background: #d4af37;
+            color: #000;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+        }
+
+        /* End Screen */
+        #end-screen {
+            opacity: 0;
+            background: radial-gradient(circle at center, rgba(50,0,0,0.3), transparent);
+        }
+
+        #end-screen.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .final-msg {
+            font-family: 'Great Vibes', cursive;
+            font-size: 5rem;
+            color: #ff3333;
+            text-shadow: 0 0 30px rgba(255, 50, 50, 0.8), 0 0 60px rgba(255, 255, 255, 0.4);
+            animation: float 3s ease-in-out infinite;
+            padding: 0 20px;
+        }
+
+        .sub-msg {
+            font-size: 1.5rem;
+            margin-top: 20px;
+            color: #fff;
+            opacity: 0.8;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; }
+            .final-msg { font-size: 3.5rem; }
+            .sub-msg { font-size: 1.2rem; }
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- 3D Particle Background -->
-<div id="particles-container"></div>
+    <!-- 3D Container -->
+    <div id="canvas-container"></div>
 
-<div class="title">✨ Noel 3D Space Gallery ✨</div>
-
-<div class="scene">
-    <div class="carousel" id="carousel"></div>
-</div>
-
-<!-- Modal for Story -->
-<div class="modal" id="storyModal">
-    <div class="modal-content">
-        <div class="modal-close" onclick="closeModal()">✕</div>
-        <img id="modalImage" class="modal-image" src="" alt="">
-        <h2 class="modal-title" id="modalTitle"></h2>
-        <p class="modal-message" id="modalMessage"></p>
+    <!-- Start Screen -->
+    <div id="start-screen" class="overlay">
+        <h1>A Christmas Story</h1>
+        <p>A cinematic journey through memories.<br>Please turn on your sound and tap below to begin.</p>
+        <button class="btn" id="start-btn">Start Journey</button>
     </div>
-</div>
 
-document.addEventListener("mousedown", e => {
-<script src="app.js"></script>
+    <!-- End Screen -->
+    <div id="end-screen" class="overlay">
+        <div class="final-msg">Merry Christmas</div>
+        <div class="sub-msg">Wishing you joy, love, and peace.</div>
+    </div>
 
+    <script>
+        // --- CONFIGURATION ---
+        const STORY_CONFIG = {
+            // Replace these URLs with your local paths e.g., './assets/images/1.jpg'
+            images: [
+                'https://picsum.photos/id/1011/600/800', // Winter canoe
+                'https://picsum.photos/id/1015/600/800', // River valley
+                'https://picsum.photos/id/1016/600/800', // Canyon
+                'https://picsum.photos/id/1018/600/800', // Nature
+                'https://picsum.photos/id/1022/600/800', // Dark forest
+                'https://picsum.photos/id/1039/600/800', // Waterfall
+                'https://picsum.photos/id/1043/600/800'  // Colors
+            ],
+            snowCount: 1500,
+            musicUrl: '' // Optional: Add a path to an mp3 here
+        };
+
+        // --- GLOBAL VARIABLES ---
+        let scene, camera, renderer;
+        let snowSystem;
+        let imageGroup;
+        let mouse = new THREE.Vector2();
+        let targetMouse = new THREE.Vector2();
+        let windowHalfX = window.innerWidth / 2;
+        let windowHalfY = window.innerHeight / 2;
+        let isPlaying = false;
+        const clock = new THREE.Clock();
+
+        // --- INITIALIZATION ---
+        function init() {
+            // 1. Scene Setup
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x020205, 0.002); // Deep fog for depth
+
+            // 2. Camera
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            // 3. Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap at 2x for performance
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            // 4. Lighting (Subtle)
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(ambientLight);
+            
+            const pointLight = new THREE.PointLight(0xffd700, 1, 50);
+            pointLight.position.set(0, 0, 10);
+            scene.add(pointLight);
+
+            // 5. Components
+            createSnow();
+            imageGroup = new THREE.Group();
+            scene.add(imageGroup);
+
+            // 6. Event Listeners
+            window.addEventListener('resize', onWindowResize, false);
+            document.addEventListener('mousemove', onDocumentMouseMove, false);
+            document.addEventListener('touchmove', onDocumentTouchMove, { passive: false });
+            
+            document.getElementById('start-btn').addEventListener('click', startStory);
+
+            // Start Loop
+            animate();
+        }
+
+        // --- SNOW SYSTEM ---
+        function createSnow() {
+            const geometry = new THREE.BufferGeometry();
+            const vertices = [];
+            
+            for (let i = 0; i < STORY_CONFIG.snowCount; i++) {
+                const x = (Math.random() - 0.5) * 100;
+                const y = (Math.random() - 0.5) * 100;
+                const z = (Math.random() - 0.5) * 100; // Deep field
+                vertices.push(x, y, z);
+            }
+
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+
+            // Create a simple circular texture programmatically
+            const canvas = document.createElement('canvas');
+            canvas.width = 32;
+            canvas.height = 32;
+            const context = canvas.getContext('2d');
+            const gradient = context.createRadialGradient(16, 16, 0, 16, 16, 16);
+            gradient.addColorStop(0, 'rgba(255,255,255,1)');
+            gradient.addColorStop(1, 'rgba(255,255,255,0)');
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, 32, 32);
+            
+            const texture = new THREE.CanvasTexture(canvas);
+
+            const material = new THREE.PointsMaterial({
+                color: 0xffffff,
+                size: 0.4,
+                map: texture,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+
+            snowSystem = new THREE.Points(geometry, material);
+            scene.add(snowSystem);
+        }
+
+        // --- IMAGE MANAGER ---
+        class ImageManager {
+            constructor(urls) {
+                this.urls = urls;
+                this.loader = new THREE.TextureLoader();
+                this.timeline = gsap.timeline({
+                    onComplete: showEnding
+                });
+            }
+
+            buildSequence() {
+                // Subtle camera forward drift
+                this.timeline.to(camera.position, {
+                    z: 3, // Move from 5 to 3 slowly
+                    duration: this.urls.length * 6 + 5,
+                    ease: "none"
+                }, 0);
+
+                this.urls.forEach((url, index) => {
+                    this.createImageFrame(url, index);
+                });
+            }
+
+            createImageFrame(url, index) {
+                // Load texture
+                this.loader.load(url, (texture) => {
+                    // Aspect ratio correction
+                    const aspect = texture.image.width / texture.image.height;
+                    const geometry = new THREE.PlaneGeometry(3 * aspect, 3);
+                    const material = new THREE.MeshBasicMaterial({ 
+                        map: texture, 
+                        transparent: true, 
+                        opacity: 0,
+                        side: THREE.DoubleSide
+                    });
+                    
+                    const mesh = new THREE.Mesh(geometry, material);
+                    
+                    // Initial Position (Far away in Z, random XY spiral)
+                    const angle = index * 2.0; // Spiral angle
+                    const radius = 8;
+                    const startZ = -60 - (index * 20); // Start deep in background
+                    
+                    mesh.position.set(
+                        Math.cos(angle) * radius,
+                        Math.sin(angle) * radius,
+                        startZ
+                    );
+                    
+                    // Random initial rotation
+                    mesh.rotation.z = (Math.random() - 0.5) * 0.5;
+                    mesh.rotation.y = (Math.random() - 0.5) * 0.5;
+
+                    imageGroup.add(mesh);
+
+                    // --- ANIMATION SEQUENCE FOR THIS IMAGE ---
+                    // Calculate start time based on index
+                    const startTime = index * 5; 
+
+                    // 1. Fly In to "Focus Zone" (near z=0)
+                    this.timeline.to(mesh.position, {
+                        z: 0,
+                        x: 0, // Center
+                        y: 0,
+                        duration: 6,
+                        ease: "power2.out"
+                    }, startTime);
+                    
+                    this.timeline.to(mesh.material, { opacity: 1, duration: 2 }, startTime);
+
+                    // 2. Hover/Read time (Gentle float)
+                    this.timeline.to(mesh.rotation, { 
+                        z: 0, 
+                        y: 0, 
+                        duration: 4,
+                        ease: "power1.inOut" 
+                    }, startTime + 2);
+
+                    // 3. Fly Out (behind camera)
+                    this.timeline.to(mesh.position, {
+                        z: 10,
+                        y: 3, // Fly up and away
+                        duration: 3,
+                        ease: "power2.in"
+                    }, startTime + 7); // Wait before leaving
+                    
+                    this.timeline.to(mesh.material, { 
+                        opacity: 0, 
+                        duration: 1 
+                    }, startTime + 9);
+                });
+            }
+        }
+
+        // --- APP LOGIC ---
+
+        function startStory() {
+            if (isPlaying) return;
+            isPlaying = true;
+            
+            // Hide Start Screen
+            const startScreen = document.getElementById('start-screen');
+            startScreen.classList.add('hidden');
+
+            // Initialize Image Sequence
+            const imgMgr = new ImageManager(STORY_CONFIG.images);
+            imgMgr.buildSequence();
+
+            // Optional: Play Audio
+            if(STORY_CONFIG.musicUrl) {
+                const audio = new Audio(STORY_CONFIG.musicUrl);
+                audio.play().catch(e => console.log("Audio autoplay blocked"));
+            }
+        }
+
+        function showEnding() {
+            const endScreen = document.getElementById('end-screen');
+            endScreen.classList.add('visible');
+            
+            // Accelerate snow for finale
+            if(snowSystem) {
+                gsap.to(snowSystem.rotation, {
+                    x: snowSystem.rotation.x + 2,
+                    duration: 10,
+                    ease: "power1.in"
+                });
+            }
+        }
+
+        // --- EVENTS ---
+
+        function onWindowResize() {
+            windowHalfX = window.innerWidth / 2;
+            windowHalfY = window.innerHeight / 2;
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function onDocumentMouseMove(event) {
+            mouse.x = (event.clientX - windowHalfX) / 200; // Sensitivity
+            mouse.y = (event.clientY - windowHalfY) / 200;
+        }
+
+        function onDocumentTouchMove(event) {
+            if (event.touches.length > 0) {
+                mouse.x = (event.touches[0].clientX - windowHalfX) / 200;
+                mouse.y = (event.touches[0].clientY - windowHalfY) / 200;
+            }
+        }
+
+        // --- ANIMATION LOOP ---
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Smooth Camera Parallax
+            targetMouse.x += (mouse.x - targetMouse.x) * 0.05;
+            targetMouse.y += (mouse.y - targetMouse.y) * 0.05;
+            
+            // Apply parallax to camera position (relative to its base movement)
+            // We add the offset to the current position which is being tweened by GSAP
+            camera.position.x += (targetMouse.x - camera.position.x) * 0.1;
+            camera.position.y += (-targetMouse.y - camera.position.y) * 0.1;
+            
+            // Ensure camera always looks at center
+            camera.lookAt(scene.position);
+
+            // Snow Animation
+            if (snowSystem) {
+                snowSystem.rotation.y += 0.001;
+                snowSystem.rotation.z += 0.0005;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // Run Init
+        init();
+
+    </script>
 </body>
 </html>
