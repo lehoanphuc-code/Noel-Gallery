@@ -5,25 +5,68 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🎄 Noel 3D Gallery 🎄</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body {
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
     height: 100vh;
     overflow: hidden;
-    background: radial-gradient(circle at top, #0b1d3a, #000);
-    font-family: Poppins, sans-serif;
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #0d0d25 100%);
+    font-family: 'Poppins', sans-serif;
     color: white;
+    position: relative;
+}
+
+/* 3D Particle Background */
+#particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    perspective: 1200px;
+}
+
+.particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: radial-gradient(circle, rgba(255,200,255,0.8), rgba(100,200,255,0.2));
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(150,150,255,0.6);
+    animation: float 20s infinite linear;
+}
+
+@keyframes float {
+    0% {
+        transform: translateZ(0) rotateX(0deg) rotateY(0deg);
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        transform: translateZ(-500px) rotateX(180deg) rotateY(180deg);
+        opacity: 0;
+    }
 }
 
 .scene {
+    position: relative;
     width: 100%;
     height: 100%;
-    perspective: 1400px;
+    perspective: 1200px;
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 10;
 }
 
 .carousel {
@@ -31,52 +74,272 @@ body {
     width: 320px;
     height: 420px;
     transform-style: preserve-3d;
-    transition: transform 0.8s ease;
+    transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
+/* Glassmorphism Card */
 .card {
     position: absolute;
     width: 260px;
     height: 360px;
-    border-radius: 20px;
+    border-radius: 30px;
     overflow: hidden;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.7);
     transform-style: preserve-3d;
-    background: #000;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.37),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        135deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.15) 50%,
+        transparent 100%
+    );
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
+    z-index: 1;
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+.card:hover {
+    transform: scale(1.05) rotateZ(2deg);
+    box-shadow: 
+        0 15px 50px 0 rgba(100, 150, 255, 0.5),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.4),
+        0 0 60px rgba(150, 100, 255, 0.3);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.card-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    overflow: hidden;
 }
 
 .card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
+}
+
+/* Reflection Effect */
+.card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        180deg,
+        transparent 40%,
+        rgba(0, 0, 0, 0.3) 100%
+    );
+    pointer-events: none;
+    z-index: 3;
 }
 
 .title {
-    position: absolute;
+    position: fixed;
     top: 30px;
     width: 100%;
     text-align: center;
-    font-size: 32px;
-    font-weight: 600;
+    font-size: 42px;
+    font-weight: 700;
+    z-index: 20;
+    text-shadow: 0 0 30px rgba(150, 100, 255, 0.4);
+    letter-spacing: 2px;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 100;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    position: relative;
+    max-width: 600px;
+    max-height: 80vh;
+    background: linear-gradient(135deg, rgba(20, 30, 70, 0.95) 0%, rgba(40, 30, 80, 0.95) 100%);
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 40px;
+    padding: 40px;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    overflow-y: auto;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    transition: all 0.3s ease;
     z-index: 10;
+}
+
+.modal-close:hover {
+    background: rgba(255, 100, 100, 0.3);
+    border-color: rgba(255, 100, 100, 0.5);
+    transform: rotate(90deg);
+}
+
+.modal-image {
+    width: 100%;
+    border-radius: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 15px 40px rgba(150, 100, 255, 0.3);
+}
+
+.modal-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.modal-message {
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: pre-wrap;
 }
 </style>
 </head>
 
 <body>
 
-<div class="title">🌌 Noel 3D Space Gallery 🌌</div>
+<!-- 3D Particle Background -->
+<div id="particles-container"></div>
+
+<div class="title">✨ Noel 3D Space Gallery ✨</div>
 
 <div class="scene">
     <div class="carousel" id="carousel"></div>
 </div>
 
+<!-- Modal for Story -->
+<div class="modal" id="storyModal">
+    <div class="modal-content">
+        <div class="modal-close" onclick="closeModal()">✕</div>
+        <img id="modalImage" class="modal-image" src="" alt="">
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <p class="modal-message" id="modalMessage"></p>
+    </div>
+</div>
+
 <script>
+// ============ 3D Particle System ============
+function createParticles() {
+    const container = document.getElementById('particles-container');
+    const particleCount = 80;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        const size = Math.random() * 3 + 1;
+        const duration = Math.random() * 15 + 15;
+        const delay = Math.random() * 5;
+        
+        particle.style.left = x + '%';
+        particle.style.top = y + '%';
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        particle.style.animationDuration = duration + 's';
+        particle.style.animationDelay = delay + 's';
+        
+        container.appendChild(particle);
+    }
+}
+
+createParticles();
+
+// ============ Story Data ============
+const storyData = {
+    "images/1.JPG": { title: "📸 Khoảnh khắc đặc biệt", message: "Những kỷ niệm đẹp cùng bạn thật là tuyệt vời! 🎄✨" },
+    "images/2.JPG": { title: "💝 Yêu thương", message: "Cảm ơn vì những lúc bên cạnh tôi. Bạn thật là quý giá! 💖" },
+    "images/3.JPG": { title: "🌟 Ánh sáng của bạn", message: "Bạn làm cuộc sống của tôi sáng hơn. Merry Christmas! 🎅" },
+    "images/4.JPG": { title: "🎄 Mùa lễ hội", message: "Mong cùng bạn có một mùa Noel ấm áp nhất! ❄️" },
+    "images/5.JPG": { title: "😊 Nụ cười", message: "Nụ cười của bạn là món quà tuyệt nhất cho tôi! 🎁" },
+    "images/6.JPG": { title: "🚀 Hành trình", message: "Hãy cùng nhau viết tiếp những câu chuyện đẹp! 🌈" },
+    "images/7.JPG": { title: "💫 Ước mơ", message: "Mong rằng những ước mơ của bạn sẽ thành hiện thực! ⭐" },
+    "images/8.JPG": { title: "🎵 Giai điệu", message: "Bạn là bài hát yêu thích của trái tim tôi! 🎶" },
+    "images/9.JPG": { title: "🌺 Sắc hoa", message: "Cuộc sống có bạn thật là rực rỡ và tươi vui! 🌸" },
+    "images/10.JPG": { title: "🎊 Ăn mừng", message: "Cảm ơn vì một năm tuyệt vời cùng bạn! 🥳" }
+};
+
+// ============ Carousel Logic ============
 let angle = 0;
 let startX = 0;
 let isDragging = false;
+let currentImageIndex = 0;
 
-/* Load images from JSON */
 fetch("images.json")
 .then(res => res.json())
 .then(images => {
@@ -92,24 +355,44 @@ fetch("images.json")
             rotateY(${i * gap}deg)
             translateZ(${radius}px)
         `;
-
+        
+        const cardContent = document.createElement("div");
+        cardContent.className = "card-content";
+        
         const img = document.createElement("img");
         img.src = src;
-
-        card.appendChild(img);
+        
+        cardContent.appendChild(img);
+        card.appendChild(cardContent);
+        
+        // Click để mở story
+        card.addEventListener('click', () => openStory(src, storyData[src] || {}));
+        
         carousel.appendChild(card);
     });
 });
 
-/* Auto rotate */
-setInterval(() => {
-    if (!isDragging) {
-        angle -= 0.15;
-        update();
-    }
-}, 16);
+// ============ Story Modal ============
+function openStory(imageSrc, story) {
+    const modal = document.getElementById('storyModal');
+    document.getElementById('modalImage').src = imageSrc;
+    document.getElementById('modalTitle').textContent = story.title || '💝 Special Moment';
+    document.getElementById('modalMessage').textContent = story.message || 'Cảm ơn vì những khoảnh khắc đẹp này! ✨';
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
 
-/* Mouse + Touch */
+function closeModal() {
+    const modal = document.getElementById('storyModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+document.getElementById('storyModal').addEventListener('click', (e) => {
+    if (e.target.id === 'storyModal') closeModal();
+});
+
+// ============ Mouse & Touch Controls ============
 document.addEventListener("mousedown", e => {
     isDragging = true;
     startX = e.clientX;
@@ -124,7 +407,6 @@ document.addEventListener("mousemove", e => {
 
 document.addEventListener("mouseup", () => isDragging = false);
 
-/* Mobile */
 document.addEventListener("touchstart", e => {
     isDragging = true;
     startX = e.touches[0].clientX;
@@ -138,10 +420,23 @@ document.addEventListener("touchmove", e => {
 
 document.addEventListener("touchend", () => isDragging = false);
 
+// ============ Auto Rotate ============
+setInterval(() => {
+    if (!isDragging) {
+        angle -= 0.15;
+        update();
+    }
+}, 16);
+
 function update() {
     document.getElementById("carousel").style.transform =
         `rotateY(${angle}deg)`;
 }
+
+// ============ Keyboard Controls ============
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+});
 </script>
 
 </body>
