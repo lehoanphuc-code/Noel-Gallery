@@ -48,8 +48,8 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 600px;
-    height: 600px;
+    width: 350px;
+    height: 350px;
     transform-style: preserve-3d;
     animation: rotateSun 200s linear infinite;
 }
@@ -63,10 +63,10 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 80px;
-    height: 80px;
-    margin-left: -40px;
-    margin-top: -40px;
+    width: 50px;
+    height: 50px;
+    margin-left: -25px;
+    margin-top: -25px;
     border-radius: 50%;
     background: radial-gradient(circle at 35% 35%, rgba(255, 200, 100, 0.6), rgba(255, 100, 50, 0.4));
     box-shadow: 
@@ -86,9 +86,9 @@ body {
     transform-style: preserve-3d;
 }
 
-.orbit-1 { width: 200px; height: 200px; animation: orbit1 15s linear infinite; }
-.orbit-2 { width: 320px; height: 320px; animation: orbit2 25s linear infinite; }
-.orbit-3 { width: 450px; height: 450px; animation: orbit3 35s linear infinite; }
+.orbit-1 { width: 120px; height: 120px; animation: orbit1 15s linear infinite; }
+.orbit-2 { width: 200px; height: 200px; animation: orbit2 25s linear infinite; }
+.orbit-3 { width: 280px; height: 280px; animation: orbit3 35s linear infinite; }
 
 @keyframes orbit1 {
     from { transform: translate(-50%, -50%) rotateX(0deg) rotateZ(0deg); }
@@ -129,12 +129,12 @@ body {
     z-index: 2;
 }
 
-.planet-1 { width: 50px; height: 50px; background: radial-gradient(circle at 35% 35%, rgba(100, 150, 255, 0.5), rgba(50, 100, 200, 0.3)); box-shadow: 0 0 20px rgba(100, 150, 255, 0.6); border: 2px solid rgba(100, 150, 255, 0.4); }
-.planet-2 { width: 45px; height: 45px; background: radial-gradient(circle at 35% 35%, rgba(255, 150, 100, 0.5), rgba(200, 100, 50, 0.3)); box-shadow: 0 0 20px rgba(255, 150, 100, 0.6); border: 2px solid rgba(255, 150, 100, 0.4); }
-.planet-3 { width: 55px; height: 55px; background: radial-gradient(circle at 35% 35%, rgba(150, 200, 100, 0.5), rgba(100, 150, 50, 0.3)); box-shadow: 0 0 20px rgba(150, 200, 100, 0.6); border: 2px solid rgba(150, 200, 100, 0.4); }
-.planet-4 { width: 40px; height: 40px; background: radial-gradient(circle at 35% 35%, rgba(200, 100, 200, 0.5), rgba(150, 50, 150, 0.3)); box-shadow: 0 0 20px rgba(200, 100, 200, 0.6); border: 2px solid rgba(200, 100, 200, 0.4); }
-.planet-5 { width: 48px; height: 48px; background: radial-gradient(circle at 35% 35%, rgba(255, 200, 100, 0.5), rgba(200, 150, 50, 0.3)); box-shadow: 0 0 20px rgba(255, 200, 100, 0.6); border: 2px solid rgba(255, 200, 100, 0.4); }
-.planet-6 { width: 52px; height: 52px; background: radial-gradient(circle at 35% 35%, rgba(100, 200, 200, 0.5), rgba(50, 150, 150, 0.3)); box-shadow: 0 0 20px rgba(100, 200, 200, 0.6); border: 2px solid rgba(100, 200, 200, 0.4); }
+.planet-1 { width: 35px; height: 35px; background: radial-gradient(circle at 35% 35%, rgba(100, 150, 255, 0.5), rgba(50, 100, 200, 0.3)); box-shadow: 0 0 20px rgba(100, 150, 255, 0.6); border: 2px solid rgba(100, 150, 255, 0.4); }
+.planet-2 { width: 32px; height: 32px; background: radial-gradient(circle at 35% 35%, rgba(255, 150, 100, 0.5), rgba(200, 100, 50, 0.3)); box-shadow: 0 0 20px rgba(255, 150, 100, 0.6); border: 2px solid rgba(255, 150, 100, 0.4); }
+.planet-3 { width: 38px; height: 38px; background: radial-gradient(circle at 35% 35%, rgba(150, 200, 100, 0.5), rgba(100, 150, 50, 0.3)); box-shadow: 0 0 20px rgba(150, 200, 100, 0.6); border: 2px solid rgba(150, 200, 100, 0.4); }
+.planet-4 { width: 30px; height: 30px; background: radial-gradient(circle at 35% 35%, rgba(200, 100, 200, 0.5), rgba(150, 50, 150, 0.3)); box-shadow: 0 0 20px rgba(200, 100, 200, 0.6); border: 2px solid rgba(200, 100, 200, 0.4); }
+.planet-5 { width: 34px; height: 34px; background: radial-gradient(circle at 35% 35%, rgba(255, 200, 100, 0.5), rgba(200, 150, 50, 0.3)); box-shadow: 0 0 20px rgba(255, 200, 100, 0.6); border: 2px solid rgba(255, 200, 100, 0.4); }
+.planet-6 { width: 36px; height: 36px; background: radial-gradient(circle at 35% 35%, rgba(100, 200, 200, 0.5), rgba(50, 150, 150, 0.3)); box-shadow: 0 0 20px rgba(100, 200, 200, 0.6); border: 2px solid rgba(100, 200, 200, 0.4); }
 
 .particle {
     position: absolute;
@@ -370,6 +370,172 @@ body {
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.85);
     white-space: pre-wrap;
+}
+
+/* ============ RESPONSIVE DESIGN ============ */
+
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) {
+    .title {
+        font-size: 36px;
+    }
+    
+    .carousel {
+        width: 280px;
+        height: 380px;
+    }
+    
+    .card {
+        width: 240px;
+        height: 340px;
+    }
+    
+    .solar-system {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .orbit-1 { width: 100px; height: 100px; }
+    .orbit-2 { width: 170px; height: 170px; }
+    .orbit-3 { width: 240px; height: 240px; }
+    
+    .planet {
+        font-size: 18px;
+    }
+}
+
+/* Mobile (320px - 768px) */
+@media (max-width: 768px) {
+    .title {
+        font-size: 28px;
+        top: 15px;
+    }
+    
+    .carousel {
+        width: 240px;
+        height: 340px;
+    }
+    
+    .card {
+        width: 200px;
+        height: 300px;
+        border-radius: 20px;
+    }
+    
+    .card:hover {
+        transform: scale(1.03) rotateZ(1deg);
+    }
+    
+    .solar-system {
+        width: 240px;
+        height: 240px;
+    }
+    
+    .sun {
+        width: 35px;
+        height: 35px;
+        margin-left: -17.5px;
+        margin-top: -17.5px;
+    }
+    
+    .orbit-1 { width: 80px; height: 80px; }
+    .orbit-2 { width: 140px; height: 140px; }
+    .orbit-3 { width: 200px; height: 200px; }
+    
+    .planet-1 { width: 28px; height: 28px; }
+    .planet-2 { width: 26px; height: 26px; }
+    .planet-3 { width: 30px; height: 30px; }
+    .planet-4 { width: 25px; height: 25px; }
+    .planet-5 { width: 27px; height: 27px; }
+    .planet-6 { width: 29px; height: 29px; }
+    
+    .planet {
+        font-size: 16px;
+    }
+    
+    .modal-content {
+        max-width: 90%;
+        padding: 30px 20px;
+        border-radius: 30px;
+    }
+    
+    .modal-title {
+        font-size: 24px;
+    }
+    
+    .modal-message {
+        font-size: 14px;
+    }
+    
+    .modal-close {
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+        top: 15px;
+        right: 15px;
+    }
+}
+
+/* Small Mobile (320px - 480px) */
+@media (max-width: 480px) {
+    .title {
+        font-size: 22px;
+        top: 10px;
+    }
+    
+    .carousel {
+        width: 200px;
+        height: 300px;
+    }
+    
+    .card {
+        width: 170px;
+        height: 270px;
+        border-radius: 18px;
+    }
+    
+    .solar-system {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .sun {
+        width: 30px;
+        height: 30px;
+        margin-left: -15px;
+        margin-top: -15px;
+    }
+    
+    .orbit-1 { width: 70px; height: 70px; }
+    .orbit-2 { width: 120px; height: 120px; }
+    .orbit-3 { width: 170px; height: 170px; }
+    
+    .planet-1 { width: 24px; height: 24px; }
+    .planet-2 { width: 22px; height: 22px; }
+    .planet-3 { width: 26px; height: 26px; }
+    .planet-4 { width: 20px; height: 20px; }
+    .planet-5 { width: 23px; height: 23px; }
+    .planet-6 { width: 25px; height: 25px; }
+    
+    .planet {
+        font-size: 14px;
+    }
+    
+    .modal-content {
+        max-width: 95%;
+        padding: 25px 15px;
+        border-radius: 25px;
+    }
+    
+    .modal-title {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+    
+    .modal-message {
+        font-size: 13px;
+        line-height: 1.5;
+    }
 }
 </style>
 </head>
