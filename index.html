@@ -246,6 +246,7 @@ body {
     box-shadow: 
         0 8px 32px 0 rgba(31, 38, 135, 0.37),
         inset 0 1px 1px 0 rgba(255, 255, 255, 0.3);
+    backface-visibility: hidden;
 }
 
 .card::before {
@@ -741,23 +742,34 @@ fetch("images.json")
 .then(res => res.json())
 .then(images => {
     const carousel = document.getElementById("carousel");
-    const total = images.length;
-    const gap = 360 / total;
-    const radius = 420;
+    const total = images.length || 0;
+    console.log('Loaded images.json, count =', total);
 
-    images.forEach((src, i) => {
+    // Fallback: if images array empty, use default list (so file:// or fetch errors won't break UI)
+    const defaultImages = [
+        'images/1.JPG','images/2.JPG','images/3.JPG','images/4.JPG','images/5.JPG',
+        'images/6.JPG','images/7.JPG','images/8.JPG','images/9.JPG','images/10.JPG'
+    ];
+
+    const imgs = (total > 0) ? images : defaultImages;
+    const gap = 360 / imgs.length;
+
+    // Dynamic radius based on viewport so translateZ is visible on desktop and mobile
+    const maxRadius = Math.min(window.innerWidth, 800) * 0.6;
+    const radius = Math.max(220, Math.min(520, Math.floor(maxRadius)));
+
+    imgs.forEach((src, i) => {
         const card = document.createElement("div");
         card.className = "card";
-        card.style.transform = `
-            rotateY(${i * gap}deg)
-            translateZ(${radius}px)
-        `;
+        card.style.transform = `rotateY(${i * gap}deg) translateZ(${radius}px)`;
+        card.style.zIndex = String(1000 - i); // help stacking a bit
         
         const cardContent = document.createElement("div");
         cardContent.className = "card-content";
         
         const img = document.createElement("img");
         img.src = src;
+        img.alt = `Image ${i+1}`;
         
         cardContent.appendChild(img);
         card.appendChild(cardContent);
@@ -767,6 +779,12 @@ fetch("images.json")
         
         carousel.appendChild(card);
     });
+})
+.catch(err => {
+    console.error('Failed to load images.json:', err);
+    // Try to still render with local defaults
+    const evt = new Event('images-fallback');
+    document.dispatchEvent(evt);
 });
 
 // ============ Story Modal ============
