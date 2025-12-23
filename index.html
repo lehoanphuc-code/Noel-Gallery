@@ -7,6 +7,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
+<link rel="stylesheet" href="effects.css">
+
 <style>
 * {
     margin: 0;
@@ -652,6 +654,17 @@ const storyData = {
     "images/9.JPG": { title: "🌺 Sắc hoa", message: "Cuộc sống có bạn thật là rực rỡ và tươi vui! 🌸" },
     "images/10.JPG": { title: "🎊 Ăn mừng", message: "Cảm ơn vì một năm tuyệt vời cùng bạn! 🥳" }
 };
+
+// ============ Load Configuration ============
+let config = {};
+
+fetch("config.json")
+    .then(res => res.json())
+    .then(data => {
+        config = data.gallery;
+        console.log("Gallery Config Loaded:", config);
+    })
+    .catch(err => console.log("Using default config"));
 
 // ============ Carousel Logic ============
 let angle = 0;
