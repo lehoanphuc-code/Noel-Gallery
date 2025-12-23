@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎄 Noel 3D Gallery 🎄</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: radial-gradient(circle at top, #0b1d3a, #000);
+    font-family: Poppins, sans-serif;
+    color: white;
+}
+
+.scene {
+    width: 100%;
+    height: 100%;
+    perspective: 1400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel {
+    position: relative;
+    width: 320px;
+    height: 420px;
+    transform-style: preserve-3d;
+    transition: transform 0.8s ease;
+}
+
+.card {
+    position: absolute;
+    width: 260px;
+    height: 360px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.7);
+    transform-style: preserve-3d;
+    background: #000;
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.title {
+    position: absolute;
+    top: 30px;
+    width: 100%;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 600;
+    z-index: 10;
+}
+</style>
+</head>
+
+<body>
+
+<div class="title">🌌 Noel 3D Space Gallery 🌌</div>
+
+<div class="scene">
+    <div class="carousel" id="carousel"></div>
+</div>
+
+<script>
+let angle = 0;
+let startX = 0;
+let isDragging = false;
+
+/* Load images from JSON */
+fetch("images.json")
+.then(res => res.json())
+.then(images => {
+    const carousel = document.getElementById("carousel");
+    const total = images.length;
+    const gap = 360 / total;
+    const radius = 420;
+
+    images.forEach((src, i) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.style.transform = `
+            rotateY(${i * gap}deg)
+            translateZ(${radius}px)
+        `;
+
+        const img = document.createElement("img");
+        img.src = src;
+
+        card.appendChild(img);
+        carousel.appendChild(card);
+    });
+});
+
+/* Auto rotate */
+setInterval(() => {
+    if (!isDragging) {
+        angle -= 0.15;
+        update();
+    }
+}, 16);
+
+/* Mouse + Touch */
+document.addEventListener("mousedown", e => {
+    isDragging = true;
+    startX = e.clientX;
+});
+
+document.addEventListener("mousemove", e => {
+    if (!isDragging) return;
+    angle += (e.clientX - startX) * 0.1;
+    startX = e.clientX;
+    update();
+});
+
+document.addEventListener("mouseup", () => isDragging = false);
+
+/* Mobile */
+document.addEventListener("touchstart", e => {
+    isDragging = true;
+    startX = e.touches[0].clientX;
+});
+
+document.addEventListener("touchmove", e => {
+    angle += (e.touches[0].clientX - startX) * 0.1;
+    startX = e.touches[0].clientX;
+    update();
+});
+
+document.addEventListener("touchend", () => isDragging = false);
+
+function update() {
+    document.getElementById("carousel").style.transform =
+        `rotateY(${angle}deg)`;
+}
+</script>
+
+</body>
+</html>
