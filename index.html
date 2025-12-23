@@ -179,6 +179,14 @@ body {
     height: 420px;
     transform-style: preserve-3d;
     transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: grab;
+}
+
+.carousel:active {
+    cursor: grabbing;
 }
 
 /* Glassmorphism Card */
@@ -725,32 +733,53 @@ document.getElementById('storyModal').addEventListener('click', (e) => {
 });
 
 // ============ Mouse & Touch Controls ============
+const scene = document.querySelector('.scene');
+
+// Desktop Mouse Events
 document.addEventListener("mousedown", e => {
+    if (e.target.closest('.card')) return;
     isDragging = true;
     startX = e.clientX;
 });
 
 document.addEventListener("mousemove", e => {
     if (!isDragging) return;
-    angle += (e.clientX - startX) * 0.1;
+    const deltaX = e.clientX - startX;
+    angle += deltaX * 0.1;
     startX = e.clientX;
     update();
 });
 
-document.addEventListener("mouseup", () => isDragging = false);
+document.addEventListener("mouseup", () => {
+    isDragging = false;
+});
 
-document.addEventListener("touchstart", e => {
+// Mobile Touch Events - bind to scene for better control
+scene.addEventListener("touchstart", e => {
+    if (e.target.closest('.card')) return;
     isDragging = true;
     startX = e.touches[0].clientX;
-});
+    e.preventDefault();
+}, { passive: false });
 
-document.addEventListener("touchmove", e => {
-    angle += (e.touches[0].clientX - startX) * 0.1;
+scene.addEventListener("touchmove", e => {
+    if (!isDragging) return;
+    if (!e.touches || e.touches.length === 0) return;
+    const deltaX = e.touches[0].clientX - startX;
+    angle += deltaX * 0.1;
     startX = e.touches[0].clientX;
     update();
-});
+    e.preventDefault();
+}, { passive: false });
 
-document.addEventListener("touchend", () => isDragging = false);
+scene.addEventListener("touchend", e => {
+    isDragging = false;
+    e.preventDefault();
+}, { passive: false });
+
+scene.addEventListener("touchcancel", e => {
+    isDragging = false;
+}, { passive: false });
 
 // ============ Auto Rotate ============
 setInterval(() => {
